@@ -16,6 +16,8 @@ public class Node {
 	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
+		ladder = 0;
+		snake = ' ';
 	}
 
 	public int getNum() {
@@ -98,19 +100,37 @@ public class Node {
 		this.first = first;
 	}
 
-	public String getSymPlayers() {
+	public String getSymPlayers(Player p) {
+		if(p != null) {
+			symPlayers += p.getSymbol();
+			getSymPlayers(p.getNext());
+		}
 		return symPlayers;
 	}
 
-	public void setSymPlayers(String symPlayers) {
-		this.symPlayers = symPlayers;
-	}
-
-	public String toString() {
+	public String toString2() {
 		return "["+row+", "+col+"]";
 	}
 	
-	public String toString2() {
-		return "["+num+"]";
+	public String toStringWithNums() {
+		String out = "";
+		if(ladder != 0) {
+			if(ladder != 0 && first != null) {
+				out = "["+num+ladder+getSymPlayers(first)+"]";
+			}else {
+				out = "["+num+ladder+"]";
+			}
+		}else if(snake != ' ') {
+			if(snake != ' ' && first != null) {
+				out = "["+num+snake+getSymPlayers(first)+"]";
+			}else {
+				out = "["+num+snake+"]";
+			}
+		}else  if(first != null){
+			out = "["+num+getSymPlayers(first)+"]";
+		}else {
+			out = "["+num+"]";
+		}
+		return out;
 	}
 }

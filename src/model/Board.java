@@ -207,7 +207,7 @@ public class Board {
 	private String toStringCol(Node current) {
 		String msg = "";
 		if(current != null) {
-			msg = current.toString2();
+			msg = current.toStringWithNums();
 			msg += toStringCol(current.getNext());
 		}
 		return msg;
