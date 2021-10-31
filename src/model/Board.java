@@ -103,6 +103,12 @@ public class Board {
 			setSnakes(s);
 			setNumPlayers(p);
 			createBoard();
+			if(!(p > 9)) {
+				addSnakesToBoard(0, snakes);
+				addLaddersToBoard(ladders);
+			}else {
+				fail = true;
+			}
 //			if(symbolPlayers.length() == p) {
 //				assignSymbolsToPlayers(0, p, symbolPlayers);
 //			}else {
@@ -112,6 +118,60 @@ public class Board {
 			fail = true;
 		}
 		return fail;
+	}
+	
+	private void addSnakesToBoard(int r, int snakes) {
+		int i = (int) Math.floor(Math.random() * rows);
+		int j = (int) Math.floor(Math.random() * colums);
+		Node node = searchNode(i, j, first);
+		if (snakes > 0 && node.getSnake() == ' ' && node.getLadder() == 0 && node.getNum() != size && node.getNum() != 1) {
+			char s = (char) ('A' + i);
+			node.setSnake(s);
+			addSnakesToBoard(i, node);
+			addSnakesToBoard(r+1, snakes-1);
+		}else if(snakes > 0){
+			addSnakesToBoard(r, snakes);
+		}
+	}
+	
+	private void addSnakesToBoard(int r, Node node) {
+		int i = (int) Math.floor(Math.random() * rows-r);
+		int j = (int) Math.floor(Math.random() * colums);
+		Node nodeS = searchNode(i, j, first);
+//		System.out.println(nodeS.toString2());
+		if(nodeS.getRow() != r && nodeS.getSnake() == ' ' && nodeS.getLadder() == 0 && nodeS.getNum() != size && nodeS.getNum() != 1) {
+			nodeS.setSnake(node.getSnake());
+		}else {
+			addSnakesToBoard(r, node);
+		}
+	}
+	
+	private void addLaddersToBoard(int ladders) {
+		int i = (int)Math.floor(Math.random() * rows);
+		int j = (int)Math.floor(Math.random() * colums);
+
+		Node node = searchNode(i, j, first);
+
+		if(node.getSnake() == ' ' && node.getLadder() == 0 && node.getNum() != 1 && node.getNum() != size && ladders != 0){
+			int l = (ladders);
+			node.setLadder(l);
+			addLaddersToBoard(i, node);
+
+			addLaddersToBoard(ladders - 1);
+		}else if(ladders > 0){
+			addLaddersToBoard(ladders);
+		}
+	}
+	
+	private void addLaddersToBoard(int row, Node node) {
+		int i = (int)Math.floor(Math.random() * rows);
+		int j = (int)Math.floor(Math.random() * colums);
+		Node nodeS = searchNode(i, j, first);
+		if(nodeS.getSnake() == ' ' && nodeS.getLadder() == 0 && nodeS.getRow() != row && nodeS.getNum() != 1 && nodeS.getNum() != size){
+			nodeS.setLadder(node.getLadder());
+		}else {
+			addLaddersToBoard(row, node);
+		}
 	}
 	
 //	private void assignSymbolsToPlayers(int index, int numPlayers, String symbolPlayers) {
@@ -209,6 +269,30 @@ public class Board {
 		if(current != null) {
 			msg = current.toStringWithNums();
 			msg += toStringCol(current.getNext());
+		}
+		return msg;
+	}
+	
+	public String toString2(){
+		String msg = "";
+		msg = toStringRow2(first);
+		return msg;
+	}
+	
+	private String toStringRow2(Node firstRow) {
+		String msg = "";
+		if(firstRow != null) {
+			msg = toStringCol2(firstRow)+"\n";
+			msg += toStringRow2(firstRow.getDown());
+		}
+		return msg;
+	}
+	
+	private String toStringCol2(Node current) {
+		String msg = "";
+		if(current != null) {
+			msg = current.toStringWithoutPlayers();
+			msg += toStringCol2(current.getNext());
 		}
 		return msg;
 	}

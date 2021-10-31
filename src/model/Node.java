@@ -112,6 +112,16 @@ public class Node {
 		return "["+row+", "+col+"]";
 	}
 	
+	public String toStringWithoutPlayers() {
+		String out = "";
+		if(ladder != 0) {
+			out = "["+num+ladder+"]";
+		}else if(snake != ' ') {
+			out = "["+num+snake+"]";
+		}
+		return out;
+	}
+	
 	public String toStringWithNums() {
 		String out = "";
 		if(ladder != 0) {

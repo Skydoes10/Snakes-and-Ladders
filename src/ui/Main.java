@@ -46,7 +46,8 @@ public class Main {
 				+ "The first two numbers are the dimensions of the game board.\n"
 				+ "The third number is the number of snakes.\n"
 				+ "The fourth number is the number of ladders.\n"
-				+ "Finally, the fifth number is the number of players\n");
+				+ "Finally, the fifth number is the number of players\n"
+				+ "NOTE: Only a maximum of 9 players can play");
 		String numbers = sc.nextLine();
 		String[] arrayNumbers = numbers.split(" ");
 		int n = Integer.parseInt(arrayNumbers[0]);
@@ -58,7 +59,6 @@ public class Main {
 				+ "NOTE: Write all symbols together, do not leave spaces.\n");
 		String players = sc.nextLine();
 		if(!board.verifySettings(n, m, s, e, p, players)) {
-			
 			System.out.println(board.toString());
 		}else {
 			System.out.println("An error has occurred with the data provided\n");
