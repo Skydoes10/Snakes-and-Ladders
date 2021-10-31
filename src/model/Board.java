@@ -1,7 +1,7 @@
 package model;
 
 public class Board {
-	private static int rows;
+	private int rows;
 	private int colums;
 	private int size;
 	private int snakes;
@@ -12,38 +12,32 @@ public class Board {
 	private Node first;
 	private Player player;
 	
-	public Board(int n, int m, int s, int e, int p) {
+	public Board(int n, int m) {
 		rows = n;
 		colums = m;
 		size = n*m;
-		snakes = s;
-		ladders = e;
-		numPlayers = p;
+		createBoard();
 	}
 	
 	private void createBoard() {
-//		System.out.println("vamos a crear la matrix");
-		first = new Node(0,0, size);
-//		System.out.println("se crea el first");
+		first = new Node(0,0);
 		createRow(0,0, first);
+		assignNumsToNode(rows-1, 0, 0);
 	}
 
 	private void createRow(int i, int j, Node currentFirstRow) {
-//		System.out.println("en createRow con la fila "+i);
 		createCol(i, j+1, currentFirstRow, currentFirstRow.getUp());
 		if(i+1 < rows) {
-			Node downFirstRow = new Node(i+1, j, size-1);
+			Node downFirstRow = new Node(i+1, j);
 			downFirstRow.setUp(currentFirstRow);
 			currentFirstRow.setDown(downFirstRow);
 			createRow(i+1, j, downFirstRow);
 		}
-//		evenOrOddRows();
 	}
 
 	private void createCol(int i, int j, Node prev, Node rowPrev) {
 		if(j < colums) {
-//			System.out.println("       en createCol con la columna "+j);
-			Node current = new Node(i, j, size-1);
+			Node current = new Node(i, j);
 			current.setPrev(prev);
 			prev.setNext(current);
 			
@@ -56,72 +50,79 @@ public class Board {
 		}
 	}
 	
-
+	private void assignNumsToNode(int row, int col, int num) {
+		Node node = searchNode(row, col, first);
+		if(node != null) {
+			assignNextNum(num+1, node);
+		}
+	}
 	
-	private void evenOrOddRows() {
-		if(rows % 2 == 0) {
-			first.setNum(size);
-			putNumbersOnRows(first.getNext(), size-1);
+	private Node searchNode(int row, int col, Node current) {
+		Node nodeFound = null;
+		if((current.getRow() == row && current.getCol() == col) || current == null) {
+			nodeFound = current;
 		}else {
-			putNumbers(first);
+			if(current.getRow() < row) {
+				if(current.getDown() != null) {
+					nodeFound = searchNode(row, col, current.getDown());
+				}
+			}else if(current.getCol() < col) {
+
+				if(current.getNext() != null) {
+					nodeFound = searchNode(row, col, current.getNext());
+				}
+			}
 		}
+		return nodeFound;
 	}
 	
-	private void putNumbersOnRows(Node current, int size) {
-		if(current.getNext() != null && current.getPrev().getNum() != 0) {
-			current.setNum(size);
-			putNumbersOnRows(current.getNext(), size-1);
-		}else if(current.getNext() == null && current.getDown() != null){
-			current.setNum(size);
-			putNumbersOnRows(current.getDown(), size-1);
-		}else if(current.getPrev() != null) {
-			current.setNum(size);
-			putNumbersOnRows(current.getPrev(), size-1);
-		}else if(current.getPrev() == null && current.getDown() != null) {
-			current.setNum(size);
-			putNumbersOnRows(current.getDown(), size-1);
+	private void assignNextNum(int num, Node node) {
+		node.setNum(num);
+		if(node.getNext() != null) {
+			assignNextNum(num+1, node.getNext());
+		}else if(node.getUp() != null) {
+			assignPrevNum(num+1, node.getUp());
 		}
 	}
-	
-	private void putNumbersOnColums(Node current, int size) {
-		System.out.println("CURRENT 2: "+current.toString());
-		System.out.println("SIZE 2: "+size);
-		if(current.getDown() != null && current.getNext() == null) {
-			current.setNum(size);
-			putNumbersOnColums(current.getPrev(), size-1);
-		}else if(current.getDown() != null && current.getUp() != null && current.getNext() != null && current.getPrev() != null) {
-			putNumbersOnRows(current, size);
-		}else if(current.getDown() != null && current.getUp() != null && current.getNext() != null && current.getPrev() == null) {
-			current.setNum(size);
-			putNumbersOnRows(current.getDown(), size-1);
+		
+	private void assignPrevNum(int num, Node node) {
+		node.setNum(num);
+		if(node.getPrev() != null) {
+			assignPrevNum(num+1, node.getPrev());
+		}else if(node.getUp() != null) {
+			assignNextNum(num+1, node.getUp());
 		}
 	}
-	
 	
 	public boolean verifySettings(int r, int c, int s, int l, int p, String symbolPlayers) {
 		Boolean fail = false;
-		if(symbolPlayers.length() == p) {
-			assignSymbolsToPlayers(p, symbolPlayers);
-			
-			if((int)((r*c)-2)/2 > s + l) {
-				rows = r;
-				colums = c;
-				setLadders(l);
-				setSnakes(s);
-				setNumPlayers(p);
-				createBoard();
-			}else {
-				fail = true;
-			}
+		if((int)((r*c)-2)/2 > s + l) {
+			rows = r;
+			colums = c;
+			setLadders(l);
+			setSnakes(s);
+			setNumPlayers(p);
+			createBoard();
+//			if(symbolPlayers.length() == p) {
+//				assignSymbolsToPlayers(0, p, symbolPlayers);
+//			}else {
+//				fail = true;
+//			}
 		}else {
 			fail = true;
 		}
 		return fail;
 	}
 	
-	private void assignSymbolsToPlayers(int numPlayers, String symbolPlayers) {
-		player.setSymbol(symbolPlayers);
-	}
+//	private void assignSymbolsToPlayers(int index, int numPlayers, String symbolPlayers) {
+//		if(index < numPlayers) {
+//			player.setSymbol(symbolPlayers.charAt(index));
+//			assignSymbolsToPlayers(index++, numPlayers, symbolPlayers);
+//		}else {
+//			
+//		}
+//		
+//	}
 	
 
 	public int getSnakes() {
@@ -153,7 +154,7 @@ public class Board {
 	}
 
 	public void setRows(int rows) {
-		Board.rows = rows;
+		this.rows = rows;
 	}
 
 	public int getColums() {

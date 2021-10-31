@@ -9,6 +9,7 @@ public class Main {
 	
 	public Main(){
 		sc = new Scanner(System.in);
+		board = new Board(0,0);
 	}
 
 	public static void main(String[] args) {
@@ -56,11 +57,12 @@ public class Main {
 		System.out.println("Now type the symbol for each player. Example: * !, O, X, %, $, #, +, &\n"
 				+ "NOTE: Write all symbols together, do not leave spaces.\n");
 		String players = sc.nextLine();
-		if(board.verifySettings(n, m, s, e, p, players)) {
-			Board board = new Board(n, m, s, e, players);
+		if(!board.verifySettings(n, m, s, e, p, players)) {
+			
 			System.out.println(board.toString());
 		}else {
 			System.out.println("An error has occurred with the data provided\n");
+			typeNumbers();
 		}
 		
 	}

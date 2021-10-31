@@ -27,6 +27,21 @@ public class Player {
 	public void setNext(Player next) {
 		this.next = next;
 	}
-	
+
+	public int getMovement() {
+		return movement;
+	}
+
+	public void setMovement(int movement) {
+		this.movement = movement;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
 	
 }

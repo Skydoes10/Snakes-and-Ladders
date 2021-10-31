@@ -4,14 +4,16 @@ public class Node {
 	private int row;
 	private int col;
 	private int num;
-	
-	
+	private int ladder;
+	private char snake;
 	private Node next;
 	private Node prev;
 	private Node up;
 	private Node down;
+	private Player first;
+	private String symPlayers;
 	
-	public Node(int row, int col, int num) {
+	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
 	}
@@ -72,6 +74,38 @@ public class Node {
 		this.down = down;
 	}
 	
+	public int getLadder() {
+		return ladder;
+	}
+
+	public void setLadder(int ladder) {
+		this.ladder = ladder;
+	}
+
+	public char getSnake() {
+		return snake;
+	}
+
+	public void setSnake(char snake) {
+		this.snake = snake;
+	}
+
+	public Player getFirst() {
+		return first;
+	}
+
+	public void setFirst(Player first) {
+		this.first = first;
+	}
+
+	public String getSymPlayers() {
+		return symPlayers;
+	}
+
+	public void setSymPlayers(String symPlayers) {
+		this.symPlayers = symPlayers;
+	}
+
 	public String toString() {
 		return "["+row+", "+col+"]";
 	}
