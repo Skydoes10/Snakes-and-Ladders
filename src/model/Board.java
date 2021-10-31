@@ -22,27 +22,28 @@ public class Board {
 	}
 	
 	private void createBoard() {
-		System.out.println("vamos a crear la matrix");
-		first = new Node(0,0);
-		System.out.println("se crea el first");
+//		System.out.println("vamos a crear la matrix");
+		first = new Node(0,0, size);
+//		System.out.println("se crea el first");
 		createRow(0,0, first);
 	}
 
 	private void createRow(int i, int j, Node currentFirstRow) {
-		System.out.println("en createRow con la fila "+i);
+//		System.out.println("en createRow con la fila "+i);
 		createCol(i, j+1, currentFirstRow, currentFirstRow.getUp());
 		if(i+1 < rows) {
-			Node downFirstRow = new Node(i+1, j);
+			Node downFirstRow = new Node(i+1, j, size-1);
 			downFirstRow.setUp(currentFirstRow);
 			currentFirstRow.setDown(downFirstRow);
 			createRow(i+1, j, downFirstRow);
 		}
+//		evenOrOddRows();
 	}
 
 	private void createCol(int i, int j, Node prev, Node rowPrev) {
 		if(j < colums) {
-			System.out.println("       en createCol con la columna "+j);
-			Node current = new Node(i, j);
+//			System.out.println("       en createCol con la columna "+j);
+			Node current = new Node(i, j, size-1);
 			current.setPrev(prev);
 			prev.setNext(current);
 			
@@ -55,37 +56,57 @@ public class Board {
 		}
 	}
 	
-//	private void putNumbers(Node current, int size) {
-//		if(current == first) {
-//			current.setNum(size);
-//		}else {
-//			current.setNum(size);
-//			putNumbers(current.getNext(), size-1);
-//		}
-//		putNumbers(current, size);
-//	}
+
 	
-	public void putNumbers(Node first, int rows, int colums) {
-		if(rows % 2 != 0) {
-			if(first.getCol() == colums) {
-				
-			}else {
-				putNumbers(first.getNext(), rows, colums);
-			}
+	private void evenOrOddRows() {
+		if(rows % 2 == 0) {
+			first.setNum(size);
+			putNumbersOnRows(first.getNext(), size-1);
 		}else {
-			first.setNum(rows*colums);
+			putNumbers(first);
 		}
-		
 	}
 	
-//	private void putNumbers(Node current, int num) {
-//		if(current.getRow() == rows && current.getCol() == 0) {
-//			current.setNum(1);
-//		}else {
-//			current.setNum(num);
-//			putNumbers(current.getNext(), num-1);
-//		}
-//	}
+	private void putNumbersOnRows(Node current, int size) {
+		if(current.getNext() != null && current.getPrev().getNum() != 0) {
+			current.setNum(size);
+			putNumbersOnRows(current.getNext(), size-1);
+		}else if(current.getNext() == null && current.getDown() != null){
+			current.setNum(size);
+			putNumbersOnRows(current.getDown(), size-1);
+		}else if(current.getPrev() != null) {
+			current.setNum(size);
+			putNumbersOnRows(current.getPrev(), size-1);
+		}else if(current.getPrev() == null && current.getDown() != null) {
+			current.setNum(size);
+			putNumbersOnRows(current.getDown(), size-1);
+		}
+	}
+	
+	private void putNumbersOnColums(Node current, int size) {
+		System.out.println("CURRENT 2: "+current.toString());
+		System.out.println("SIZE 2: "+size);
+		if(current.getDown() != null && current.getNext() == null) {
+			current.setNum(size);
+			putNumbersOnColums(current.getPrev(), size-1);
+		}else if(current.getDown() != null && current.getUp() != null && current.getNext() != null && current.getPrev() != null) {
+			putNumbersOnRows(current, size);
+		}else if(current.getDown() != null && current.getUp() != null && current.getNext() != null && current.getPrev() == null) {
+			current.setNum(size);
+			putNumbersOnRows(current.getDown(), size-1);
+		}
+	}
+	
+	
+	
+	private void putNumbers(Node current) {
+		if(current.getCol() == colums-1 && current.getRow() == 0) {
+			current.setNum(size);
+			
+		}else {
+			putNumbers(current.getNext());
+		}
+	}
 
 	public int getSnakes() {
 		return snakes;
@@ -169,7 +190,7 @@ public class Board {
 	private String toStringCol(Node current) {
 		String msg = "";
 		if(current != null) {
-			msg = current.toString();
+			msg = current.toString2();
 			msg += toStringCol(current.getNext());
 		}
 		return msg;

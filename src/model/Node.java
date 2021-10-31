@@ -10,7 +10,7 @@ public class Node {
 	private Node up;
 	private Node down;
 	
-	public Node(int row, int col) {
+	public Node(int row, int col, int num) {
 		this.row = row;
 		this.col = col;
 	}
@@ -72,6 +72,10 @@ public class Node {
 	}
 	
 	public String toString() {
+		return "["+row+", "+col+"]";
+	}
+	
+	public String toString2() {
 		return "["+num+"]";
 	}
 }
