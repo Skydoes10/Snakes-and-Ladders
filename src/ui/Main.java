@@ -5,6 +5,7 @@ import model.Board;
 
 public class Main {
 	private Scanner sc;
+	private Board board;
 	
 	public Main(){
 		sc = new Scanner(System.in);
@@ -16,28 +17,26 @@ public class Main {
 	}
 
 	public void mainMenu() {
-		boolean menu = true;
-		int option;
-		while(menu) {
-			System.out.println("\n******************************************************" +
-								"\nSelect an option:\n" + 
-								"\n(1) Play" + 
-								"\n(2) See the leaderboard" + 
-								"\n(3) Exit" + 
-								"\n******************************************************\n"
-								);
-		option = Integer.parseInt(sc.nextLine());
-		switch(option) {
-			case 1: typeNumbers();
+		System.out.println("\n******************************************************" +
+				"\nType number of an option:\n" + 
+				"\n(1) Play" + 
+				"\n(2) See the leaderboard" + 
+				"\n(3) Exit" + 
+				"\n******************************************************\n"
+				);
+		int option = Integer.parseInt(sc.nextLine());
+		if(option != 3) {
+			switch(option) {
+				case 1: typeNumbers();
 				break;
-			case 2: 
+				case 2: 
 				break;
-			case 3: System.out.println("\nBye!");
-					menu = false;
-				break;
-			default:
+				default:
 					System.out.println("\nError, invalid option");
-		}
+					mainMenu();
+			}
+		}else {
+			System.out.println("Bye ;)");
 		}
 	}
 	
@@ -54,10 +53,16 @@ public class Main {
 		int s = Integer.parseInt(arrayNumbers[2]);
 		int e = Integer.parseInt(arrayNumbers[3]);
 		int p = Integer.parseInt(arrayNumbers[4]);
-		System.out.println("Now type the symbol of each player. Example: * ! O X % $ # + &\n");
+		System.out.println("Now type the symbol for each player. Example: * !, O, X, %, $, #, +, &\n"
+				+ "NOTE: Write all symbols together, do not leave spaces.\n");
 		String players = sc.nextLine();
-		Board board = new Board(n, m, s, e, players);
-		System.out.println(board.toString());
+		if(board.verifySettings(n, m, s, e, p, players)) {
+			Board board = new Board(n, m, s, e, players);
+			System.out.println(board.toString());
+		}else {
+			System.out.println("An error has occurred with the data provided\n");
+		}
+		
 	}
 	
 	

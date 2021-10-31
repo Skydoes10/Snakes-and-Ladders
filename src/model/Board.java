@@ -1,24 +1,24 @@
 package model;
 
 public class Board {
-	private int rows;
+	private static int rows;
 	private int colums;
 	private int size;
 	private int snakes;
 	private int ladders;
-	private String players;
+	private int numPlayers;
+	private String SymPlayers;
 	private String board;
 	private Node first;
+	private Player player;
 	
-	public Board(int n, int m, int s, int e, String p) {
+	public Board(int n, int m, int s, int e, int p) {
 		rows = n;
 		colums = m;
 		size = n*m;
 		snakes = s;
 		ladders = e;
-		players = p;
-		createBoard();
-//		putNumbers(first, size);
+		numPlayers = p;
 	}
 	
 	private void createBoard() {
@@ -98,15 +98,31 @@ public class Board {
 	}
 	
 	
-	
-	private void putNumbers(Node current) {
-		if(current.getCol() == colums-1 && current.getRow() == 0) {
-			current.setNum(size);
+	public boolean verifySettings(int r, int c, int s, int l, int p, String symbolPlayers) {
+		Boolean fail = false;
+		if(symbolPlayers.length() == p) {
+			assignSymbolsToPlayers(p, symbolPlayers);
 			
+			if((int)((r*c)-2)/2 > s + l) {
+				rows = r;
+				colums = c;
+				setLadders(l);
+				setSnakes(s);
+				setNumPlayers(p);
+				createBoard();
+			}else {
+				fail = true;
+			}
 		}else {
-			putNumbers(current.getNext());
+			fail = true;
 		}
+		return fail;
 	}
+	
+	private void assignSymbolsToPlayers(int numPlayers, String symbolPlayers) {
+		player.setSymbol(symbolPlayers);
+	}
+	
 
 	public int getSnakes() {
 		return snakes;
@@ -124,12 +140,12 @@ public class Board {
 		this.ladders = ladders;
 	}
 
-	public String getPlayers() {
-		return players;
+	public int getNumPlayers() {
+		return numPlayers;
 	}
 
-	public void setPlayers(String players) {
-		this.players = players;
+	public void setNumPlayers(int numPlayers) {
+		this.numPlayers = numPlayers;
 	}
 	
 	public int getRows() {
@@ -137,7 +153,7 @@ public class Board {
 	}
 
 	public void setRows(int rows) {
-		this.rows = rows;
+		Board.rows = rows;
 	}
 
 	public int getColums() {

@@ -5,6 +5,7 @@ public class Node {
 	private int col;
 	private int num;
 	
+	
 	private Node next;
 	private Node prev;
 	private Node up;
