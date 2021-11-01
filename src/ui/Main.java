@@ -47,7 +47,7 @@ public class Main {
 				+ "The third number is the number of snakes.\n"
 				+ "The fourth number is the number of ladders.\n"
 				+ "Finally, the fifth number is the number of players\n"
-				+ "NOTE: Only a maximum of 9 players can play");
+				+ "NOTE: Only a maximum of 9 players can play\n");
 		String numbers = sc.nextLine();
 		String[] arrayNumbers = numbers.split(" ");
 		int n = Integer.parseInt(arrayNumbers[0]);
@@ -55,17 +55,31 @@ public class Main {
 		int s = Integer.parseInt(arrayNumbers[2]);
 		int e = Integer.parseInt(arrayNumbers[3]);
 		int p = Integer.parseInt(arrayNumbers[4]);
-		System.out.println("Now type the symbol for each player. Example: * !, O, X, %, $, #, +, &\n"
+		System.out.println("\nNow type the symbol for each player. Example: * !, O, X, %, $, #, +, &\n"
 				+ "NOTE: Write all symbols together, do not leave spaces.\n");
 		String players = sc.nextLine();
-		if(!board.verifySettings(n, m, s, e, p, players)) {
-			System.out.println(board.toString());
+		if(!board.verifyData(n, m, s, e, p, players)) {
+			System.out.println(board.toString3());
+			System.out.println("\nTo start the game, please press the ENTER key.\n");
+			startGame();
 		}else {
-			System.out.println("An error has occurred with the data provided\n");
+			System.out.println("\nAn error has occurred with the data provided\n");
 			typeNumbers();
 		}
-		
 	}
 	
-	
+	public void startGame() {
+		String in = sc.nextLine();
+		if(in.isEmpty()) {
+			System.out.println(board.toString2());
+			
+//		}else if(in.equalsIgnoreCase()) {
+//			
+//		}else if(in.equalsIgnoreCase()) {
+//			
+//		}else if(in.equalsIgnoreCase()) {
+//			
+//		}
+		}
+	}
 }

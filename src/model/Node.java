@@ -10,7 +10,7 @@ public class Node {
 	private Node prev;
 	private Node up;
 	private Node down;
-	private Player first;
+	private Player firstPlayer;
 	private String symPlayers;
 	
 	public Node(int row, int col) {
@@ -18,6 +18,70 @@ public class Node {
 		this.col = col;
 		ladder = 0;
 		snake = ' ';
+	}
+	
+	public String getSymPlayers(Player p) {
+		if(p != null) {
+			symPlayers += p.getSymbol();
+			getSymPlayers(p.getNextPlayer());
+		}
+		return symPlayers;
+	}
+	
+	public String toStringWithoutNums() {
+		String out = "";
+		if(ladder != 0) {
+			if(ladder != 0 && firstPlayer != null) {
+				out = "["+ladder+getSymPlayers(firstPlayer)+"]";
+			}else {
+				out = "["+ladder+"]";
+			}
+		}else if(snake != ' ') {
+			if(snake != ' ' && firstPlayer != null) {
+				out = "["+snake+getSymPlayers(firstPlayer)+"]";
+			}else {
+				out = "["+snake+"]";
+			}
+		}else if(firstPlayer != null){
+			out = "["+getSymPlayers(firstPlayer)+"]";
+		}else {
+			out = "[ ]";
+		}
+		return out;
+	}
+	
+	public String toStringWithNums() {
+		String out = "";
+		if(ladder != 0) {
+			if(ladder != 0 && firstPlayer != null) {
+				out = "["+num+ladder+getSymPlayers(firstPlayer)+"]";
+			}else {
+				out = "["+num+ladder+"]";
+			}
+		}else if(snake != ' ') {
+			if(snake != ' ' && firstPlayer != null) {
+				out = "["+num+snake+getSymPlayers(firstPlayer)+"]";
+			}else {
+				out = "["+num+snake+"]";
+			}
+		}else  if(firstPlayer != null){
+			out = "["+num+getSymPlayers(firstPlayer)+"]";
+		}else {
+			out = "["+num+"]";
+		}
+		return out;
+	}
+	
+	public String toStringWithoutPlayers() {
+		String out = "";
+		if(ladder != 0) {
+			out = "["+num+ladder+"]";
+		}else if(snake != ' ') {
+			out = "["+num+snake+"]";
+		}else {
+			out = "["+num+"]";
+		}
+		return out;
 	}
 
 	public int getNum() {
@@ -92,55 +156,12 @@ public class Node {
 		this.snake = snake;
 	}
 
-	public Player getFirst() {
-		return first;
+	public Player getFirstPlayer() {
+		return firstPlayer;
 	}
 
-	public void setFirst(Player first) {
-		this.first = first;
+	public void setFirstPlayer(Player firstPlayer) {
+		this.firstPlayer = firstPlayer;
 	}
 
-	public String getSymPlayers(Player p) {
-		if(p != null) {
-			symPlayers += p.getSymbol();
-			getSymPlayers(p.getNext());
-		}
-		return symPlayers;
-	}
-
-	public String toString2() {
-		return "["+row+", "+col+"]";
-	}
-	
-	public String toStringWithoutPlayers() {
-		String out = "";
-		if(ladder != 0) {
-			out = "["+num+ladder+"]";
-		}else if(snake != ' ') {
-			out = "["+num+snake+"]";
-		}
-		return out;
-	}
-	
-	public String toStringWithNums() {
-		String out = "";
-		if(ladder != 0) {
-			if(ladder != 0 && first != null) {
-				out = "["+num+ladder+getSymPlayers(first)+"]";
-			}else {
-				out = "["+num+ladder+"]";
-			}
-		}else if(snake != ' ') {
-			if(snake != ' ' && first != null) {
-				out = "["+num+snake+getSymPlayers(first)+"]";
-			}else {
-				out = "["+num+snake+"]";
-			}
-		}else  if(first != null){
-			out = "["+num+getSymPlayers(first)+"]";
-		}else {
-			out = "["+num+"]";
-		}
-		return out;
-	}
 }
