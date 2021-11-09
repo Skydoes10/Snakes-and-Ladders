@@ -4,6 +4,9 @@ import java.util.Scanner;
 import model.Board;
 
 public class Main {
+	public final String NUM = "NUM";
+	public final String MENU = "MENU";
+	
 	private Scanner sc;
 	private Board board;
 	
@@ -58,7 +61,7 @@ public class Main {
 		System.out.println("\nNow type the symbol for each player. Example: * !, O, X, %, $, #, +, &\n"
 				+ "NOTE: Write all symbols together, do not leave spaces.\n");
 		String players = sc.nextLine();
-		if(!board.verifyData(n, m, s, e, p, players)) {
+		if(!board.addData(n, m, s, e, p, players)) {
 			System.out.println(board.toString3());
 			System.out.println("\nTo start the game, please press the ENTER key.\n");
 			startGame();
@@ -70,16 +73,25 @@ public class Main {
 	
 	public void startGame() {
 		String in = sc.nextLine();
-		if(in.isEmpty()) {
-			System.out.println(board.toString2());
-			
-//		}else if(in.equalsIgnoreCase()) {
-//			
-//		}else if(in.equalsIgnoreCase()) {
-//			
-//		}else if(in.equalsIgnoreCase()) {
-//			
-//		}
+		if(in.equalsIgnoreCase(NUM)) {
+			System.out.println(board.toString3());
+			System.out.println("\nTo continue the game, please press the ENTER key.\n");
+			startGame();
+		}else if(in.equalsIgnoreCase(MENU)) {
+			mainMenu();
+		}else if(in.isEmpty()) {
+			String out = board.movePlayer();
+			if(board.getWinGame()) {
+				System.out.println(out);
+			}else {
+				System.out.println(out);
+				System.out.println(board.toString2());
+				startGame();
+			}
+		}else {
+			System.out.println("\nError, invalid option\n");
+			startGame();
 		}
 	}
+	
 }

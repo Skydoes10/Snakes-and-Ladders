@@ -30,17 +30,17 @@ public class Node {
 	
 	public String toStringWithoutNums() {
 		String out = "";
-		if(ladder != 0) {
-			if(ladder != 0 && firstPlayer != null) {
-				out = "["+ladder+getSymPlayers(firstPlayer)+"]";
-			}else {
-				out = "["+ladder+"]";
-			}
-		}else if(snake != ' ') {
+		if(snake != ' ') {
 			if(snake != ' ' && firstPlayer != null) {
 				out = "["+snake+getSymPlayers(firstPlayer)+"]";
 			}else {
 				out = "["+snake+"]";
+			}
+		}else if(ladder != 0) {
+			if(ladder != 0 && firstPlayer != null) {
+				out = "["+ladder+getSymPlayers(firstPlayer)+"]";
+			}else {
+				out = "["+ladder+"]";
 			}
 		}else if(firstPlayer != null){
 			out = "["+getSymPlayers(firstPlayer)+"]";

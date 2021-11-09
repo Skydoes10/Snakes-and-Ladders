@@ -3,13 +3,13 @@ package model;
 public class Player {
 	private char symbol;
 	private int position;
-	private int movement;
+	private int moves;
 	private Player nextPlayer;
 	
 	public Player(char symbol) {
 		this.symbol = symbol;
 		position = 0;
-		movement = 0;
+		moves = 0;
 	}
 
 	public char getSymbol() {
@@ -28,12 +28,12 @@ public class Player {
 		this.nextPlayer = nextPlayer;
 	}
 
-	public int getMovement() {
-		return movement;
+	public int getMoves() {
+		return moves;
 	}
 
-	public void setMovement(int movement) {
-		this.movement = movement;
+	public void setMoves(int moves) {
+		this.moves = moves;
 	}
 
 	public int getPosition() {
